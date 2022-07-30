@@ -15,6 +15,7 @@ class Servicios extends Model
         'nombre',
         'tipo_servicio_id',
         'ciudad',
+        'precio',
         'estado'
     ];
 

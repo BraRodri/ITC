@@ -34,6 +34,7 @@ class ServicioController extends Controller
                     $value->codigo,
                     $value->nombre,
                     $value->tipoServicio->nombre,
+                    '$'.number_format($value->precio, 0, ",", "."),
                     $value->ciudad,
                     "<span class='badge bg-" . Helper::getColorEstadoNormal($value->estado) . "'>" . Helper::getEstadoNormal($value->estado) . "</span>",
                     $botones
@@ -69,6 +70,7 @@ class ServicioController extends Controller
                     'nombre' => $request->nombre,
                     'tipo_servicio_id' => $request->tipo_servicio,
                     'ciudad' => $request->ciudad,
+                    'precio' => $request->precio,
                     'estado' => $request->estado
                 );
 
@@ -137,6 +139,7 @@ class ServicioController extends Controller
                     'nombre' => $request->nombre,
                     'tipo_servicio_id' => $request->tipo_servicio,
                     'ciudad' => $request->ciudad,
+                    'precio' => $request->precio,
                     'estado' => $request->estado
                 );
 

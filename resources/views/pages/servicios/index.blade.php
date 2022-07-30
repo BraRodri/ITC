@@ -39,6 +39,7 @@
                             <th>Codigo</th>
                             <th>Servicio</th>
                             <th>Tipo</th>
+                            <th>Precio</th>
                             <th>Ciudad</th>
                             <th>Estado</th>
                             <th>Acciones</th>
@@ -51,6 +52,7 @@
                             <th>Servicio</th>
                             <th>Tipo</th>
                             <th>Ciudad</th>
+                            <th>Precio</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>

@@ -31,7 +31,7 @@
                 <form id="form_editar" class="row g-3 needs-validation" method="POST" novalidate enctype="multipart/form-data">
                     @csrf
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label for="" class="form-label">Nombre del Servicio</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $servicio->nombre }}" required>
                     </div>
@@ -59,6 +59,10 @@
                             <option value="">- Seleccione -</option>
                             <option value="Cúcuta" {{ ($servicio->ciudad == 'Cúcuta') ? 'selected' : '' }}>Cúcuta</option>
                         </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="precio" name="precio" value="{{ $servicio->precio }}" min="1" required>
                     </div>
                     <div class="col-md-6">
                         <label for="inputState" class="form-label">Estado</label>
