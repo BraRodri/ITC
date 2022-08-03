@@ -25,6 +25,13 @@ class Helper {
         return $retorno;
     }
 
+    public static function getEstadoServicio($data)
+    {
+        $array = self::getDataEstadoServicios();
+        $retorno = $array[$data];
+        return $retorno;
+    }
+
     public static function getDataEstado()
     {
         $data = array(
@@ -52,6 +59,16 @@ class Helper {
         $data = array(
             1 => "Activo",
             2 => "Inactivo"
+        );
+        return $data;
+    }
+
+    public static function getDataEstadoServicios()
+    {
+        $data = array(
+            1 => "Activo",
+            2 => "Anulado",
+            3 => "Matriculado"
         );
         return $data;
     }

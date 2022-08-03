@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Artisan;
@@ -75,6 +76,15 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::get('/tipos-de-servicios/delete/{id}', 'deleteTipos')->name('servicios.tipos.delete');
         Route::get('/tipos-de-servicios/edit/{id}', 'editTipos')->name('servicios.tipos.edit');
         Route::post('/tipos-de-servicios/update', 'updateTipos')->name('servicios.tipos.update');
+
+    });
+
+    #Registro
+    Route::controller(RegistroController::class)
+        ->prefix('registro')->group(function () {
+
+        Route::get('/servicios', 'servicios')->name('registro.servicios.index');
+        Route::post('/servicios/create', 'serviciosCreate')->name('registro.servicios.create');
 
     });
 
