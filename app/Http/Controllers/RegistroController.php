@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Helper\Helper;
 use App\Models\Facturas;
 use App\Models\RegistroServicios;
+use App\Models\Servicios;
+use App\Models\TiposServicios;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class RegistroController extends Controller
 {
@@ -93,6 +97,72 @@ class RegistroController extends Controller
         echo json_encode([
             'data' => $datos,
         ]);
+    }
+
+    public function reportes()
+    {
+        $estados = Helper::getDataEstadoServicios();
+        $servicios = Servicios::where('estado', 1)->get();
+        $estudiantes = User::where('estado', 1)->whereHas('roles', function ($query) {
+            $query->where('name', 'Estudiante');
+        })->get();
+        $tipos_servicios = TiposServicios::where('estado', 1)->get();
+        return view('pages.registro.servicios.reportes')->with([
+            'estados'=> $estados,
+            'servicios' => $servicios,
+            'usuarios' => $estudiantes,
+            'tipos_servicios' => $tipos_servicios
+        ]);
+    }
+
+    public function generarReportes(Request $request)
+    {
+        //dd($request);
+        //datos
+        $fecha_i = $request->fecha_desde;
+        $fecha_n = $request->fecha_hasta;
+
+        $reporte = RegistroServicios::where('id', '<>', '');
+
+        if($request->usuario != null){
+            $reporte = $reporte->where('estudiante_id', $request->usuario);
+        }
+
+        if($request->tipo_servicio != null){
+            $reporte = $reporte->where('tipo_servicio', $request->tipo_servicio);
+        }
+
+        if($request->servicio != null){
+            $reporte = $reporte->where('servicio', $request->servicio);
+        }
+
+        if($request->estado != null){
+            $reporte = $reporte->where('estado', $request->estado);
+        }
+
+        if($request->fecha_desde != null && $request->fecha_hasta != null){
+            $reporte = $reporte->whereBetween(DB::raw('DATE(created_at)'), [$fecha_i, $fecha_n]);
+        }
+
+        $reporte = $reporte->get();
+
+        return (new FastExcel($reporte))->download('reporte_registro_servicios_'.date('YmdHms').'.xlsx', function ($data) {
+
+            $factura = Facturas::where('registro_servicio_id', $data->id)->first();
+
+            return [
+                "#" => $data->id,
+                "Tipo Documento Estudiante" => $data->estudiante->tipo_documento,
+                "Numero de Documento Estudiante" => $data->estudiante->numero_documento,
+                "Nombres Estudiante" => $data->estudiante->nombres,
+                "Tipo de Servicio" => $data->tipo_servicio,
+                "Servicio" => $data->servicio,
+                "Numero Factura" => '#'.substr(str_repeat(0, 5).$factura->id, - 5),
+                "Precio" => '$'.number_format($data->valor, 0, ",", "."),
+                "Estado" => Helper::getEstadoNormal($data->estado),
+                "Fecha Creación" => date("Y-m-d h:i:s a", strtotime($data->created_at))
+            ];
+        });
     }
 
 }

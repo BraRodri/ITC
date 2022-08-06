@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="{{ route('panel') }}">Usuarios</a></li>
+                  <li class="breadcrumb-item"><a href="{{ route('panel') }}">Registro</a></li>
                   <li class="breadcrumb-item active" aria-current="page">Generación de Reportes</li>
                 </ol>
             </nav>
@@ -27,21 +27,10 @@
                 Filtros
             </div>
             <div class="card-body">
-                <form class="row" action="{{ route('usuarios.generarReportes') }}" method="POST" target="_blank">
+                <form class="row" action="{{ route('registro.servicios.generarReportes') }}" method="POST" target="_blank">
                     @csrf
                     <div class="col-lg-4 col-12">
-                        <label for="inputState" class="form-label">Roles:</label>
-                        <select id="rol" class="form-select" name="rol">
-                            <option value="" selected>- Seleccione -</option>
-                            @if (count($roles) > 0)
-                                @foreach ($roles as $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
-                            @endif
-                        </select>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <label for="" class="form-label">Usuario</label>
+                        <label for="" class="form-label">Estudiante</label>
                         <select id="usuario" class="form-select select2" name="usuario">
                             <option value="" selected>- Seleccione -</option>
                             @if (count($usuarios) > 0)
@@ -52,12 +41,23 @@
                         </select>
                     </div>
                     <div class="col-lg-4 col-12">
-                        <label for="" class="form-label">Tipo de Documento</label>
-                        <select id="tipo_documento" class="form-select" name="tipo_documento">
+                        <label for="" class="form-label">Tipo de Servicio</label>
+                        <select id="tipo_servicio" class="form-select" name="tipo_servicio">
                             <option value="" selected>- Seleccione -</option>
-                            @if (count($tipos_documentos) > 0)
-                                @foreach ($tipos_documentos as $key => $value)
-                                    <option value="{{ $value }}">{{ $value }}</option>
+                            @if (count($tipos_servicios) > 0)
+                                @foreach ($tipos_servicios as $key => $value)
+                                    <option value="{{ $value->nombre }}">{{ $value->nombre }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <label for="" class="form-label">Servicio</label>
+                        <select id="servicio" class="form-select select2" name="servicio">
+                            <option value="" selected>- Seleccione -</option>
+                            @if (count($servicios) > 0)
+                                @foreach ($servicios as $key => $value)
+                                    <option value="{{ $value->nombre }}">{{ $value->nombre }}</option>
                                 @endforeach
                             @endif
                         </select>

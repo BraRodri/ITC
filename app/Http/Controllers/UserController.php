@@ -15,6 +15,9 @@ use Rap2hpoutre\FastExcel\FastExcel;
 class UserController extends Controller
 {
 
+    //datos
+    public $rol;
+
     public function index()
     {
         return view('pages.usuarios.index');
@@ -289,7 +292,6 @@ class UserController extends Controller
         ]);
     }
 
-    public $rol;
     public function generarReportes(Request $request)
     {
         //dd($request);

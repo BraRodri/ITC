@@ -94,6 +94,10 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::post('/servicios/create', 'serviciosCreate')->name('registro.servicios.create');
         Route::get('/servicios/all', 'serviciosAll')->name('registro.servicios.all');
 
+        //reportes
+        Route::get('/servicios/reportes', 'reportes')->name('registro.servicios.reportes');
+        Route::post('/servicios/reportes/generar', 'generarReportes')->name('registro.servicios.generarReportes');
+
     });
 
     #Facturación

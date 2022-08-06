@@ -41,17 +41,20 @@
     </li>
 
     <!-- Registros -->
-    <li class="nav-item {{ ! Route::is('registro.servicios.index') ?: 'active' }}">
+    <li class="nav-item {{ ! Route::is('registro.servicios.index') ?: 'active' }} {{ ! Route::is('registro.servicios.reportes') ?: 'active' }}">
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRegistro"
             aria-expanded="true" aria-controls="collapseRegistro">
             <i class="fa-solid fa-book"></i>
             <span>Registro</span>
         </a>
-        <div id="collapseRegistro" class="collapse {{ ! Route::is('registro.servicios.index') ?: 'show' }} {{ ! Route::is('servicios.tipos.index') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseRegistro" class="collapse {{ ! Route::is('registro.servicios.index') ?: 'show' }} {{ ! Route::is('registro.servicios.reportes') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones:</h6>
                 <a class="collapse-item {{ ! Route::is('registro.servicios.index') ?: 'active' }}" href="{{ route('registro.servicios.index') }}">
                     Servicios
+                </a>
+                <a class="collapse-item {{ ! Route::is('registro.servicios.reportes') ?: 'active' }}" href="{{ route('registro.servicios.reportes') }}">
+                    Reportes
                 </a>
             </div>
         </div>
