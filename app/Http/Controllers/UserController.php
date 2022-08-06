@@ -6,9 +6,11 @@ use App\Helper\Helper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class UserController extends Controller
 {
@@ -271,6 +273,71 @@ class UserController extends Controller
         }
 
         echo json_encode(array('error' => $error, 'mensaje' => $mensaje));
+    }
+
+    public function reportes()
+    {
+        $roles = Role::all();
+        $estados = Helper::getDataEstado();
+        $tipos_documentos = Helper::getDataTiposDocumentos();
+        $usuarios = User::all();
+        return view('pages.usuarios.reportes')->with([
+            'roles' => $roles,
+            'estados' => $estados,
+            'tipos_documentos' => $tipos_documentos,
+            'usuarios' => $usuarios
+        ]);
+    }
+
+    public $rol;
+    public function generarReportes(Request $request)
+    {
+        //dd($request);
+        //datos
+        $this->rol = $request->rol;
+        $fecha_i = $request->fecha_desde;
+        $fecha_n = $request->fecha_hasta;
+
+        $usuarios = User::where('id', '<>', '');
+
+        if($request->rol != null){
+            $usuarios = $usuarios->whereHas('roles', function ($query) {
+                $query->where('name', $this->rol);
+            });
+        }
+
+        if($request->usuario != null){
+            $usuarios = $usuarios->where('id', $request->usuario);
+        }
+
+        if($request->tipo_documento != null){
+            $usuarios = $usuarios->where('tipo_documento', $request->tipo_documento);
+        }
+
+        if($request->estado != null){
+            $usuarios = $usuarios->where('estado', $request->estado);
+        }
+
+        if($request->fecha_desde != null && $request->fecha_hasta != null){
+            $usuarios = $usuarios->whereBetween(DB::raw('DATE(created_at)'), [$fecha_i, $fecha_n]);
+        }
+
+        $usuarios = $usuarios->get();
+
+        return (new FastExcel($usuarios))->download('reporte_usuarios_'.date('YmdHms').'.xlsx', function ($user) {
+            return [
+                "#" => $user->id,
+                "Rol" => $user->getRoleNames()[0],
+                "Tipo Documento" => $user->tipo_documento,
+                "Numero de Documento" => $user->numero_documento,
+                "Nombres" => $user->nombres,
+                "Correo Electronico" => $user->email,
+                "Dirección" => $user->direccion,
+                "Celular" => $user->celular,
+                "Estado" => Helper::getEstado($user->estado),
+                "Fecha Creación" => date("Y-m-d h:i:s a", strtotime($user->created_at))
+            ];
+        });
     }
 
 }

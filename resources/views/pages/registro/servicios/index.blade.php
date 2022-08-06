@@ -72,7 +72,9 @@
         <script>
 
             $('.select2_modal').select2({
-                dropdownParent: $('#modal_registrar_servicio')
+                dropdownParent: $('#modal_registrar_servicio'),
+                minimumInputLength: 4,
+                allowClear: true,
             });
 
             var tabla = $('#datatable').DataTable({

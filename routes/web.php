@@ -60,6 +60,10 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::get('/usuarios/estudiantes', 'indexEstudiantes')->name('usuarios.estudiantes.index');
         Route::get('/usuarios/estudiantes/all', 'allEstudiantes')->name('usuarios.estudiantes.all');
 
+        //reportes
+        Route::get('/usuarios/resportes', 'reportes')->name('usuarios.reportes');
+        Route::post('/usuarios/resportes/generar', 'generarReportes')->name('usuarios.generarReportes');
+
     });
 
     #servicios

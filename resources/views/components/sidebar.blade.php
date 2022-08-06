@@ -18,13 +18,13 @@
     </li>
 
     <!-- Usuarios -->
-    <li class="nav-item {{ ! Route::is('usuarios.administrativos.index') ?: 'active' }} {{ ! Route::is('usuarios.estudiantes.index') ?: 'active' }}">
+    <li class="nav-item {{ ! Route::is('usuarios.administrativos.index') ?: 'active' }} {{ ! Route::is('usuarios.estudiantes.index') ?: 'active' }} {{ ! Route::is('usuarios.reportes') ?: 'active' }}">
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsuarios"
             aria-expanded="true" aria-controls="collapseUsuarios">
             <i class="fa-solid fa-users"></i>
             <span>Gestión de Usuarios</span>
         </a>
-        <div id="collapseUsuarios" class="collapse {{ ! Route::is('usuarios.administrativos.index') ?: 'show' }} {{ ! Route::is('usuarios.estudiantes.index') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseUsuarios" class="collapse {{ ! Route::is('usuarios.administrativos.index') ?: 'show' }} {{ ! Route::is('usuarios.estudiantes.index') ?: 'show' }} {{ ! Route::is('usuarios.reportes') ?: 'show' }}"  aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones:</h6>
                 <a class="collapse-item {{ ! Route::is('usuarios.administrativos.index') ?: 'active' }}" href="{{ route('usuarios.administrativos.index') }}">
@@ -32,6 +32,9 @@
                 </a>
                 <a class="collapse-item {{ ! Route::is('usuarios.estudiantes.index') ?: 'active' }}" href="{{ route('usuarios.estudiantes.index') }}">
                     Estudiantes
+                </a>
+                <a class="collapse-item {{ ! Route::is('usuarios.reportes') ?: 'active' }}" href="{{ route('usuarios.reportes') }}">
+                    Reportes
                 </a>
             </div>
         </div>
