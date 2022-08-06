@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    @section('pagina')Usuarios Administrativos @endsection
+    @section('pagina')Estudiantes @endsection
 
     <div class="container-fluid">
 
@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Usuarios Administrativos</li>
+                  <li class="breadcrumb-item active" aria-current="page">Estudiantes</li>
                 </ol>
             </nav>
         </div>
@@ -16,11 +16,11 @@
         <!-- Page Heading -->
         <div class="row mb-3">
             <div class="col-lg-6">
-                <h1 class="h3 text-gray-800 flex-grow-1">Usuarios Administrativos</h1>
+                <h1 class="h3 text-gray-800 flex-grow-1">Estudiantes</h1>
             </div>
             <div class="col-lg-6 text-end">
                 <button class="btn btn-primary rounded btn-sm" data-bs-toggle="modal" data-bs-target="#registrar_usuario">
-                    Nuevo Usuario Administrativo
+                    Nuevo Estudiante
                 </button>
             </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="card mb-4">
             <div class="card-header bg-gray-600">
                 <i class="fas fa-table me-1"></i>
-                Listado de Usuarios Administrativos
+                Listado de Estudiantes
             </div>
             <div class="card-body">
                 <table class="table" id="datatable" style="width: 100%;">
@@ -61,7 +61,7 @@
     </div>
 
     <!-- Importaciones -->
-    <x-user.crear-usuario tipo="1"/>
+    <x-user.crear-usuario tipo="2"/>
     <x-user.editar-usuario/>
 
     <x-slot name="js">
@@ -74,7 +74,7 @@
                 },
                 "order": [[ 0, "desc" ]],
                 "pageLength" : 25,
-                "ajax": route('usuarios.administrativos.all'),
+                "ajax": route('usuarios.estudiantes.all'),
                 "responsive": true
             });
 

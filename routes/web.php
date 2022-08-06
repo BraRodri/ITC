@@ -50,13 +50,15 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
     Route::controller(UserController::class)
         ->group(function () {
 
-        Route::get('/usuarios', 'index')->name('usuarios.index');
-        Route::get('/usuarios/all', 'all')->name('usuarios.all');
+        Route::get('/usuarios/administrativos', 'index')->name('usuarios.administrativos.index');
+        Route::get('/usuarios/administrativos/all', 'all')->name('usuarios.administrativos.all');
         Route::post('/usuarios/create', 'create')->name('usuarios.create');
         Route::get('/usuarios/delete/{id}', 'delete')->name('usuarios.delete');
         Route::get('/usuarios/get/{id}', 'get')->name('usuarios.get');
-        Route::get('/usuarios/edit/{id}', 'edit')->name('usuarios.edit');
+        Route::get('/usuarios/edit/{id}/{tipo}', 'edit')->name('usuarios.edit');
         Route::post('/usuarios/update', 'update')->name('usuarios.update');
+        Route::get('/usuarios/estudiantes', 'indexEstudiantes')->name('usuarios.estudiantes.index');
+        Route::get('/usuarios/estudiantes/all', 'allEstudiantes')->name('usuarios.estudiantes.all');
 
     });
 

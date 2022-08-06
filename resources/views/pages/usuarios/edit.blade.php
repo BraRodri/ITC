@@ -8,7 +8,11 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="{{ route('usuarios.index') }}">Usuarios</a></li>
+                  @if ($tipo == 1)
+                    <li class="breadcrumb-item"><a href="{{ route('usuarios.administrativos.index') }}">Usuarios Administrativos</a></li>
+                    @else
+                    <li class="breadcrumb-item"><a href="{{ route('usuarios.estudiantes.index') }}">Estudiantes</a></li>
+                  @endif
                   <li class="breadcrumb-item active" aria-current="page">Actualizar Usuario</li>
                 </ol>
             </nav>
@@ -78,7 +82,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="passsword" autocomplete="off">
+                        <input type="password" class="form-control" id="password" name="passsword" autocomplete="off" @if($tipo == 2) disabled @endif>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Telefono/Celular</label>
@@ -109,7 +113,11 @@
                     <input type="hidden" name="id" id="editar_id" value="{{ $usuario->id }}">
 
                     <div class="col-12 pt-3">
-                        <a href="{{ route('usuarios.index') }}" class="btn btn-dark btn-sm">Regresar</a>
+                        @if ($tipo == 1)
+                            <a href="{{ route('usuarios.administrativos.index') }}" class="btn btn-dark btn-sm">Regresar</a>
+                            @else
+                            <a href="{{ route('usuarios.estudiantes.index') }}" class="btn btn-dark btn-sm">Regresar</a>
+                        @endif
                         <button type="submit" class="btn btn-primary rounded btn-sm">Actualizar Usuario</button>
                     </div>
                 </form>
@@ -118,8 +126,12 @@
 
     </div>
 
+    <input type="hidden" id="tipo" value="{{ $tipo }}">
+
     <x-slot name="js">
         <script>
+
+            var tipo = $('#tipo').val();
 
             $('#form_editar_usuario').on('submit', function(e) {
                 event.preventDefault();
@@ -165,7 +177,12 @@
                                 timer: 3000
                             });
 
-                            location.href = route('usuarios.index');
+                            if(tipo == '1'){
+                                location.href = route('usuarios.administrativos.index');
+                            } else {
+                                location.href = route('usuarios.estudiantes.index');
+                            }
+
                         } else {
                             setTimeout(function(){
                                 Swal.fire({

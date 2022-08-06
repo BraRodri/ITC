@@ -13,9 +13,11 @@ class CrearUsuario extends Component
      *
      * @return void
      */
-    public function __construct()
+
+    public $tipo;
+    public function __construct($tipo)
     {
-        //
+        $this->tipo = $tipo;
     }
 
     /**
@@ -25,9 +27,14 @@ class CrearUsuario extends Component
      */
     public function render()
     {
-        $roles = Role::all();
+        if($this->tipo == 1){
+            $roles = Role::where('name', '!=', 'Estudiante')->get();
+        } else {
+            $roles = Role::where('name', '=', 'Estudiante')->get();
+        }
+        $tipo = $this->tipo;
         $estados = Helper::getDataEstado();
         $tipos_documentos = Helper::getDataTiposDocumentos();
-        return view('components.user.crear-usuario', compact('roles', 'estados', 'tipos_documentos'));
+        return view('components.user.crear-usuario', compact('roles', 'estados', 'tipos_documentos', 'tipo'));
     }
 }

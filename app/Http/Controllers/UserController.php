@@ -22,7 +22,9 @@ class UserController extends Controller
     {
         $datos = array();
 
-        $usuarios = User::where('id', '<>', Auth::user()->id)->get();
+        $usuarios = User::where('id', '<>', Auth::user()->id)->whereHas('roles', function ($query) {
+            $query->where('name', '!=', 'Estudiante');
+        })->get();
         if(count($usuarios) > 0){
             foreach ($usuarios as $key => $value) {
 
@@ -35,7 +37,53 @@ class UserController extends Controller
                 // }
 
                 $botones .= '<div class="btn-group" role="group">';
-                $botones .= "<a href='".route('usuarios.edit', $value->id)."' class='btn btn-success btn-sm'>Editar</a>";
+                $botones .= "<a href='".route('usuarios.edit', [$value->id, 1])."' class='btn btn-success btn-sm'>Editar</a>";
+                $botones .= "<button class='btn btn-danger btn-sm' onclick='eliminarUsuario(".$value->id.");'>Eliminar</button>";
+                $botones .= '</div>';
+
+                $datos[] = array(
+                    $value->id,
+                    $value->numero_documento,
+                    $value->nombres,
+                    $value->email,
+                    $value->getRoleNames(),
+                    "<span class='badge bg-" . Helper::getColorEstado($value->estado) . "'>" . Helper::getEstado($value->estado) . "</span>",
+                    $botones
+                );
+
+            }
+        }
+
+        echo json_encode([
+            'data' => $datos,
+        ]);
+    }
+
+    public function indexEstudiantes()
+    {
+        return view('pages.usuarios.estudiantes');
+    }
+
+    public function allEstudiantes()
+    {
+        $datos = array();
+
+        $usuarios = User::where('id', '<>', Auth::user()->id)->whereHas('roles', function ($query) {
+            $query->where('name', 'Estudiante');
+        })->get();
+        if(count($usuarios) > 0){
+            foreach ($usuarios as $key => $value) {
+
+                $botones = '';
+                // if(Auth::user()->can('editar_usuario')){
+                //     $botones .= "<button class='btn btn-success' onclick='editarUsuario(".$value->id.");'>Editar</button>";
+                // }
+                // if(Auth::user()->can('eliminar_usuario')){
+                //     $botones .= "<button class='btn btn-danger' onclick='eliminarUsuario(".$value->id.");'>Eliminar</button>";
+                // }
+
+                $botones .= '<div class="btn-group" role="group">';
+                $botones .= "<a href='".route('usuarios.edit', [$value->id, 2])."' class='btn btn-success btn-sm'>Editar</a>";
                 $botones .= "<button class='btn btn-danger btn-sm' onclick='eliminarUsuario(".$value->id.");'>Eliminar</button>";
                 $botones .= '</div>';
 
@@ -152,7 +200,7 @@ class UserController extends Controller
         echo json_encode(array('error' => $error, 'mensaje' => $mensaje, 'data' => $info));
     }
 
-    public function edit($id)
+    public function edit($id, $tipo)
     {
         $usuario = User::findOrFail($id);
         $roles = Role::all();
@@ -162,7 +210,8 @@ class UserController extends Controller
             'usuario' => $usuario,
             'roles' => $roles,
             'estados' => $estados,
-            'tipos_documentos' => $tipos_documentos
+            'tipos_documentos' => $tipos_documentos,
+            'tipo' => $tipo
         ]);
     }
 
