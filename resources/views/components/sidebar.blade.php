@@ -60,18 +60,21 @@
         </div>
     </li>
 
-    <!-- Registros -->
-    <li class="nav-item {{ ! Route::is('facturacion.index') ?: 'active' }}">
+    <!-- Facturación -->
+    <li class="nav-item {{ ! Route::is('facturacion.index') ?: 'active' }} {{ ! Route::is('facturacion.reportes') ?: 'active' }}">
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFacturacion"
             aria-expanded="true" aria-controls="collapseFacturacion">
             <i class="fa-solid fa-money-check-dollar"></i>
             <span>Facturación</span>
         </a>
-        <div id="collapseFacturacion" class="collapse {{ ! Route::is('facturacion.index') ?: 'show' }} {{ ! Route::is('facturacion.index') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseFacturacion" class="collapse {{ ! Route::is('facturacion.index') ?: 'show' }} {{ ! Route::is('facturacion.reportes') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones:</h6>
                 <a class="collapse-item {{ ! Route::is('facturacion.index') ?: 'active' }}" href="{{ route('facturacion.index') }}">
                     Facturas
+                </a>
+                <a class="collapse-item {{ ! Route::is('facturacion.reportes') ?: 'active' }}" href="{{ route('facturacion.reportes') }}">
+                    Reportes
                 </a>
             </div>
         </div>

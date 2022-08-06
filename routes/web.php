@@ -116,6 +116,10 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::post('/pagos/actualizar', 'pagosUpdate')->name('facturacion.pagos.update');
         Route::get('/pagos/get/{id}', 'pagosGet')->name('facturacion.pagos.get');
 
+        //reportes
+        Route::get('/reportes', 'reportes')->name('facturacion.reportes');
+        Route::post('/reportes/generar', 'generarReportes')->name('facturacion.generarReportes');
+
     });
 
 });

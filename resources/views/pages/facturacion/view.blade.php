@@ -212,7 +212,11 @@
                 "order": [[ 0, "desc" ]],
                 "pageLength" : 10,
                 "ajax": route('facturacion.pagos.all', "{{ $factura->id }}"),
-                "responsive": true
+                "responsive": true,
+                "dom": 'Bfrtip',
+                "buttons": [
+                    'csv', 'excel'
+                ],
             });
 
             $('#btn_actualizar').on('click', function(){

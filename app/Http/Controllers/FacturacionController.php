@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Helper\Helper;
 use App\Models\Facturas;
 use App\Models\PagosFacturas;
+use App\Models\Servicios;
+use App\Models\TiposServicios;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class FacturacionController extends Controller
 {
@@ -410,6 +415,85 @@ class FacturacionController extends Controller
         $pdf = Pdf::loadView('pdf.factura', compact('factura'));
         return $pdf->stream("factura_$num_factura.pdf");
         //return $pdf->download("factura_$num_factura.pdf");
+    }
+
+    public function reportes()
+    {
+        $facturas = Facturas::all();
+        $estados = Helper::getDataEstadoFacturas();
+        $servicios = Servicios::where('estado', 1)->get();
+        $estudiantes = User::where('estado', 1)->whereHas('roles', function ($query) {
+            $query->where('name', 'Estudiante');
+        })->get();
+        $tipos_servicios = TiposServicios::where('estado', 1)->get();
+        return view('pages.facturacion.reportes')->with([
+            'estados'=> $estados,
+            'servicios' => $servicios,
+            'usuarios' => $estudiantes,
+            'tipos_servicios' => $tipos_servicios,
+            'facturas' => $facturas
+        ]);
+    }
+
+    public $usuario_id, $tipo_servicio, $servicio;
+    public function generarReportes(Request $request)
+    {
+        //dd($request);
+        //datos
+        $this->usuario_id = $request->usuario;
+        $this->tipo_servicio = $request->tipo_servicio;
+        $this->servicio = $request->servicio;
+        $fecha_i = $request->fecha_desde;
+        $fecha_n = $request->fecha_hasta;
+
+        $reporte = Facturas::where('id', '<>', '');
+
+        if($request->factura != null){
+            $reporte = $reporte->where('id', $request->factura);
+        }
+
+        if($request->usuario != null){
+            $reporte = $reporte->whereHas('registroServicio', function($query) {
+                $query->where('estudiante_id', '=', $this->usuario_id);
+            });
+        }
+
+        if($request->tipo_servicio != null){
+            $reporte = $reporte->whereHas('registroServicio', function($query) {
+                $query->where('tipo_servicio', '=', $this->tipo_servicio);
+            });
+        }
+
+        if($request->servicio != null){
+            $reporte = $reporte->whereHas('registroServicio', function($query) {
+                $query->where('servicio', '=', $this->servicio);
+            });
+        }
+
+        if($request->estado != null){
+            $reporte = $reporte->where('estado', $request->estado);
+        }
+
+        if($request->fecha_desde != null && $request->fecha_hasta != null){
+            $reporte = $reporte->whereBetween(DB::raw('DATE(created_at)'), [$fecha_i, $fecha_n]);
+        }
+
+        $reporte = $reporte->get();
+
+        return (new FastExcel($reporte))->download('reporte_facturas_'.date('YmdHms').'.xlsx', function ($data) {
+            return [
+                "Numero Factura" => '#'.substr(str_repeat(0, 5).$data->id, - 5),
+                "Tipo Documento Estudiante" => $data->registroServicio->estudiante->tipo_documento,
+                "Numero de Documento Estudiante" => $data->registroServicio->estudiante->numero_documento,
+                "Nombres Estudiante" => $data->registroServicio->estudiante->nombres,
+                "Tipo de Servicio" => $data->registroServicio->tipo_servicio,
+                "Servicio" => $data->registroServicio->servicio,
+                "Precio" => '$'.number_format($data->valor, 0, ",", "."),
+                "Saldo" => '$'.number_format($data->saldo, 0, ",", "."),
+                "Estado" => Helper::getEstadoFacturas($data->estado),
+                "Fecha Creación" => date("Y-m-d h:i:s a", strtotime($data->created_at))
+            ];
+        });
     }
 
 }

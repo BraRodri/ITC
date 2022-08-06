@@ -9,6 +9,7 @@ use App\Models\Servicios;
 use App\Models\TiposServicios;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class RegistroController extends Controller
