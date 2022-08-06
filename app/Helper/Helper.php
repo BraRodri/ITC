@@ -32,6 +32,20 @@ class Helper {
         return $retorno;
     }
 
+    public static function getEstadoFacturas($data)
+    {
+        $array = self::getDataEstadoFacturas();
+        $retorno = $array[$data];
+        return $retorno;
+    }
+
+    public static function getEstadoPagos($data)
+    {
+        $array = self::getDataEstadoPagos();
+        $retorno = $array[$data];
+        return $retorno;
+    }
+
     public static function getDataEstado()
     {
         $data = array(
@@ -73,6 +87,26 @@ class Helper {
         return $data;
     }
 
+    public static function getDataEstadoFacturas()
+    {
+        $data = array(
+            1 => "En mora",
+            2 => "Al dia",
+            3 => "Anulado"
+        );
+        return $data;
+    }
+
+    public static function getDataEstadoPagos()
+    {
+        $data = array(
+            1 => "Aprobado",
+            2 => "Pendiente",
+            3 => "Anulado"
+        );
+        return $data;
+    }
+
     public static function getColorEstado($data)
     {
         switch ($data) {
@@ -99,6 +133,38 @@ class Helper {
                 $color = "success";
                 break;
             case 2:
+                $color = "danger";
+                break;
+        }
+        return $color;
+    }
+
+    public static function getColorEstadoFacturas($data)
+    {
+        switch ($data) {
+            case 1:
+                $color = "warning";
+                break;
+            case 2:
+                $color = "success";
+                break;
+            case 3:
+                $color = "danger";
+                break;
+        }
+        return $color;
+    }
+
+    public static function getColorEstadoPagos($data)
+    {
+        switch ($data) {
+            case 1:
+                $color = "success";
+                break;
+            case 2:
+                $color = "warning";
+                break;
+            case 3:
                 $color = "danger";
                 break;
         }

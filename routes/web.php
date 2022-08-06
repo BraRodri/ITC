@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FacturacionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ServicioController;
@@ -85,6 +86,25 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
 
         Route::get('/servicios', 'servicios')->name('registro.servicios.index');
         Route::post('/servicios/create', 'serviciosCreate')->name('registro.servicios.create');
+        Route::get('/servicios/all', 'serviciosAll')->name('registro.servicios.all');
+
+    });
+
+    #Facturación
+    Route::controller(FacturacionController::class)
+        ->prefix('facturacion')->group(function () {
+
+        Route::get('/', 'index')->name('facturacion.index');
+        Route::get('/ver/{id}', 'view')->name('facturacion.ver');
+        Route::get('/all', 'all')->name('facturacion.all');
+        Route::post('/actualizar', 'update')->name('facturacion.update');
+        Route::get('/download/{id}', 'download')->name('facturacion.download');
+
+        //pagos
+        Route::post('/pagos/create', 'pagoscreate')->name('facturacion.pagos.create');
+        Route::get('/pagos/all/{id}', 'pagosAll')->name('facturacion.pagos.all');
+        Route::post('/pagos/actualizar', 'pagosUpdate')->name('facturacion.pagos.update');
+        Route::get('/pagos/get/{id}', 'pagosGet')->name('facturacion.pagos.get');
 
     });
 

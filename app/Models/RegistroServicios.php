@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RegistroServicios extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'estudiante_id',
@@ -19,4 +19,8 @@ class RegistroServicios extends Model
         'valor',
         'estado'
     ];
+
+    public function estudiante(){
+        return $this->belongsTo(User::class, 'estudiante_id');
+    }
 }

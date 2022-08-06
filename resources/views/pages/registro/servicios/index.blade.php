@@ -42,6 +42,7 @@
                             <th>Tipo Servicio</th>
                             <th>Precio</th>
                             <th>Estado</th>
+                            <th>Factura</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -54,6 +55,7 @@
                             <th>Tipo Servicio</th>
                             <th>Precio</th>
                             <th>Estado</th>
+                            <th>Factura</th>
                             <th>Acciones</th>
                         </tr>
                     </tfoot>
@@ -80,7 +82,7 @@
                 },
                 "order": [[ 0, "desc" ]],
                 "pageLength" : 25,
-                //"ajax": route('servicios.all'),
+                "ajax": route('registro.servicios.all'),
                 "responsive": true
             });
 
