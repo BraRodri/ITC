@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-md-12">
                         <label for="inputPassword4" class="form-label">Servicio</label>
-                        <select class="form-select select2_modal" name="servicio" id="servicio" required style="width: 100%;">
+                        <select class="form-select select2_modal_2" name="servicio" id="servicio" required style="width: 100%;">
                             <option value="">- Seleccione -</option>
                             @if (count($servicios) > 0)
                                 @foreach ($servicios as $item)
@@ -57,6 +57,13 @@
                                 @endforeach
                             @endif
                         </select>
+                    </div>
+
+                    <div class="col-12 ps-4 ">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" value="1" name="con_firma">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">¿Deseas generar la factura con firma automatica?</label>
+                        </div>
                     </div>
 
                     <div class="col-12 pt-3" style="text-align: right">

@@ -20,7 +20,7 @@ class CreatePagosFacturasTable extends Migration
             $table->string('tipo');
             $table->string('fecha');
             $table->text('descripcion');
-            $table->float('valor')->default(0);
+            $table->float('valor', 15, 2)->default(0);
             $table->integer('estado')->default(1);
 
             $table->timestamps();

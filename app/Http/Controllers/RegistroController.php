@@ -9,6 +9,7 @@ use App\Models\Servicios;
 use App\Models\TiposServicios;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\FastExcel;
 
@@ -37,6 +38,8 @@ class RegistroController extends Controller
 
         if($data = RegistroServicios::create($guardar)){
 
+            $user_created =
+
             //crear factura al servicio
             $crear_factura = array(
                 'registro_servicio_id' => $data->id,
@@ -44,7 +47,9 @@ class RegistroController extends Controller
                 'fecha' => date('Y-m-d'),
                 'valor' => $data->valor,
                 'saldo' => $data->valor,
-                'estado' => 1
+                'con_firma' => ($request->con_firma == null) ? 0 : 1,
+                'estado' => 1,
+                'user_created' => (Auth::user()) ? Auth::user()->id : null
             );
 
             if(Facturas::create($crear_factura)){

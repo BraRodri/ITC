@@ -37,6 +37,7 @@
                 border: 1px solid;
                 border-radius: 10px;
                 border-collapse: collapse;
+                font-size: 15px;
             }
 
             .table-bordered>:not(caption)>* {
@@ -57,7 +58,7 @@
                 border-style: solid;
                 border-width: 0;
                 border: 1px solid;
-                padding: 5px;
+                padding: 3px;
             }
 
             .table-bordered thead th {
@@ -65,7 +66,7 @@
                 border-style: solid;
                 border-width: 0;
                 border: 1px solid #000;
-                padding: 5px;
+                padding: 3px;
                 color: #fff;
                 background-color: #017CC1;
             }
@@ -79,14 +80,14 @@
             <tbody>
                 <tr>
                     <td width="30%">
-                        <img src="images/logotipo.png" style="width: 100%; height: 220px;">
+                        <img src="images/logotipo.png" style="width: 80%;">
                     </td>
                     <td width="70%" style="text-align: center;">
-                        <h1>CÚCUTA</h1>
-                        <h2>
+                        <h1 style="margin-bottom: -20px;">CÚCUTA</h1>
+                        <h3 style="margin-bottom: -15px;">
                             Calle 1 # 5-14 B. Comuneros<br>
                             Cel: 315-6056257
-                        </h2>
+                        </h3>
                         <p>
                             Licencia de Funcionamiento: Resolución No. 2486 de Dic/05/2012 de la Secretaria de Educación de Cúcuta
                         </p>
@@ -103,18 +104,22 @@
                         <table class="table">
                             <tbody>
                                 <tr >
-                                    <td width="20%" style="padding-bottom: 10px;">Fecha:</td>
-                                    <td width="80%" style="padding-bottom: 10px;">
+                                    <td width="20%" style="padding-bottom: 5px;">Fecha:</td>
+                                    <td width="80%" style="padding-bottom: 5px;">
                                         <div class="border_abajo">
-                                            {{ $factura->fecha }}
+                                            {{ date("Y-m-d h:i:s a", strtotime($factura->created_at)) }}
                                         </div>
                                     </td>
                                 </tr>
                                 <tr style="padding-top: 20px;">
-                                    <td width="20%" style="padding-bottom: 10px;">Nombres:</td>
-                                    <td width="80%" style="padding-bottom: 10px;">
+                                    <td width="20%" style="padding-bottom: 5px;">Nombres:</td>
+                                    <td width="80%" style="padding-bottom: 5px;">
                                         <div class="border_abajo">
-                                            {{ $factura->registroServicio->estudiante->nombres }}
+                                            @if ($factura->registroServicio)
+                                                @if ($factura->registroServicio->estudiante)
+                                                    {{ $factura->registroServicio->estudiante->nombres }}
+                                                @endif
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -124,16 +129,24 @@
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <td width="10%" style="padding-bottom: 10px;">C.C:</td>
-                                    <td width="35%" style="padding-bottom: 10px;">
+                                    <td width="10%" style="padding-bottom: 5px;">C.C:</td>
+                                    <td width="35%" style="padding-bottom: 5px;">
                                         <div class="border_abajo">
-                                            {{ $factura->registroServicio->estudiante->numero_documento }}
+                                            @if ($factura->registroServicio)
+                                                @if ($factura->registroServicio->estudiante)
+                                                    {{ $factura->registroServicio->estudiante->numero_documento }}
+                                                @endif
+                                            @endif
                                         </div>
                                     </td>
-                                    <td width="15%" style="padding-bottom: 10px;">Celular:</td>
-                                    <td width="35%" style="padding-bottom: 10px;">
+                                    <td width="15%" style="padding-bottom: 5px;">Celular:</td>
+                                    <td width="35%" style="padding-bottom: 5px;">
                                         <div class="border_abajo">
-                                            {{ $factura->registroServicio->estudiante->celular }}
+                                            @if ($factura->registroServicio)
+                                                @if ($factura->registroServicio->estudiante)
+                                                    {{ $factura->registroServicio->estudiante->celular }}
+                                                @endif
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -170,12 +183,14 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th width="50%">DETALLE</th>
-                    <th width="50%">VALOR</th>
+                    <th width="30%">FECHA</th>
+                    <th width="35%">DETALLE</th>
+                    <th width="35%">VALOR</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
+                    <td style="text-align: center;">{{ date("Y-m-d h:i:s a", strtotime($factura->created_at)) }}</td>
                     <td style="text-align: center;">
                         {{ $factura->registroServicio->servicio }}
                     </td>
@@ -183,12 +198,28 @@
                         {{ number_format($factura->valor, 0, ",", ".") }}
                     </td>
                 </tr>
+                @if (count($factura->abonos) > 0)
+                    @foreach ($factura->abonos as $item)
+                        @if ($item->estado == 1)
+                            <tr>
+                                <td style="text-align: center;">{{ date("Y-m-d h:i:s a", strtotime($item->created_at)) }}</td>
+                                <td style="text-align: center;">
+                                    {{ $item->tipo }}
+                                </td>
+                                <td style="text-align: center;">
+                                    {{ number_format($item->valor, 0, ",", ".") }}
+                                </td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
                 <tr>
+                    <td></td>
                     <td style="text-align: right;">
                         TOTAL $
                     </td>
                     <td style="text-align: center;">
-                        {{ number_format($factura->valor, 0, ",", ".") }}
+                        {{ number_format($factura->saldo, 0, ",", ".") }}
                     </td>
                 </tr>
             </tbody>
@@ -196,27 +227,64 @@
 
         <br>
 
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td width="60%">
-                        <div style="border: 1px solid; border-radius: 10px; margin-right: 10px; padding: 10px; text-align: center;">
-                            <div style="border-bottom: 1px solid; margin-top: 50px; margin-left: 40px; margin-right: 40px;"></div>
-                            Firma y Sello
-                        </div>
-                        <p style="text-align: center">
-                            Nota: No se devuelven dineros por ningún motivo. Las mensualidades se deben pagar los 5 primeros dias de cada mes.
-                        </p>
-                    </td>
-                    <td width="40%" style="text-align: center;">
-                        ÁREA AUXILIAR EN ENFERMERIA <br>
-                        <div style="border: 1px solid; border-radius: 10px; padding: 30px; margin-top: 30px;">
+        @if ($factura->con_firma == 0)
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td width="60%">
+                            <div style="border: 1px solid; border-radius: 10px; margin-right: 10px; padding: 10px; text-align: center;">
+                                <div style="border-bottom: 1px solid; margin-top: 40px; margin-left: 40px; margin-right: 40px;"></div>
+                                Firma y Sello
+                            </div>
+                            <p style="text-align: center">
+                                Nota: No se devuelven dineros por ningún motivo. Las mensualidades se deben pagar los 5 primeros dias de cada mes.
+                            </p>
+                        </td>
+                        <td width="40%" style="text-align: center;">
+                            ÁREA AUXILIAR EN ENFERMERIA <br>
+                            <div style="border: 1px solid; border-radius: 10px; padding: 30px; margin-top: 30px;">
 
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @else
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td width="60%">
+                            <div style="border: 1px solid; border-radius: 10px; margin-right: 10px; padding: 10px; text-align: center;">
+                                <div style="margin-top: 20px; margin-bottom: 5px;">
+                                    @if ($factura->registroServicio)
+                                        @if ($factura->registroServicio->estudiante)
+                                            {{ $factura->registroServicio->estudiante->nombres }}
+                                        @endif
+                                    @endif
+                                </div>
+                                <div style="border-bottom: 1px solid; margin-left: 40px; margin-right: 40px;"></div>
+                                Firma y Sello
+                            </div>
+                            <p style="text-align: center">
+                                Nota: No se devuelven dineros por ningún motivo. Las mensualidades se deben pagar los 5 primeros dias de cada mes.
+                            </p>
+                        </td>
+                        <td width="40%" style="text-align: center;">
+                            ÁREA AUXILIAR EN ENFERMERIA <br>
+                            <div style="border: 1px solid; border-radius: 10px; padding: 10px; margin-top: 30px;">
+                                @if ($factura->creador)
+                                    {{ $factura->creador->nombres }} <br>
+                                    C.C. {{ $factura->creador->numero_documento }}
+                                @endif
+
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        @endif
+
 
     </body>
 

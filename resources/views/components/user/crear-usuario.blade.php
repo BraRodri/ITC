@@ -71,7 +71,7 @@
                     </div>
                     <div class="col-md-12">
                         <label for="inputPassword4" class="form-label">Por ultimo, por favor sube una copia del documento de identidad</label>
-                        <input type="file" class="form-control" id="archivo" name="archivo" accept=".pdf" required>
+                        <input type="file" class="form-control" id="archivo" name="archivo" accept=".pdf">
                     </div>
 
                     <div class="col-12 pt-3" style="text-align: right">

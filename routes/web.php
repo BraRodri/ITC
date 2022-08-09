@@ -64,6 +64,10 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::get('/usuarios/resportes', 'reportes')->name('usuarios.reportes');
         Route::post('/usuarios/resportes/generar', 'generarReportes')->name('usuarios.generarReportes');
 
+        //identificacion
+        Route::get('/usuarios/identificacion', 'identificacion')->name('usuarios.identificacion');
+        Route::post('/usuarios/identificacion/get', 'getIdentificacion')->name('usuarios.getIdentificacion');
+
     });
 
     #servicios

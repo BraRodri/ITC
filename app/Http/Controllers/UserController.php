@@ -342,4 +342,40 @@ class UserController extends Controller
         });
     }
 
+    public function identificacion()
+    {
+        return view('pages.usuarios.identificacion');
+    }
+
+    public function getIdentificacion(Request $request)
+    {
+        $error = false;
+        $mensaje = '';
+        $data = array();
+
+        $usuario = User::where('numero_documento', 'LIKE', '%'.$request->cedula.'%')->get();
+        if(count($usuario) > 0){
+            foreach ($usuario as $key => $value) {
+
+                if($value->archivo_cedula){
+                    $boton = "<a href='". asset($value->archivo_cedula) ."' target='_blank' class='btn btn-primary btn-sm'>Ver Documento</a>";
+                } else {
+                    $boton = "<a class='btn btn-danger btn-sm'>No tiene documento</a>";
+                }
+
+                $data[] = array(
+                    'id' => $value->id,
+                    'tipo_documento' => $value->tipo_documento,
+                    'numero_documento' => $value->numero_documento,
+                    'nombres' => $value->nombres,
+                    'estado' => "<span class='badge bg-" . Helper::getColorEstado($value->estado) . "'>" . Helper::getEstado($value->estado) . "</span>",
+                    'boton' => $boton
+                );
+
+            }
+        }
+
+        echo json_encode(array('error' => $error, 'mensaje' => $mensaje, 'data' => $data));
+    }
+
 }

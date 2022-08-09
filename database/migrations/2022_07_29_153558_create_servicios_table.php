@@ -20,7 +20,7 @@ class CreateServiciosTable extends Migration
             $table->string('nombre');
             $table->bigInteger('tipo_servicio_id');
             $table->string('ciudad');
-            $table->float('precio')->default(0);
+            $table->float('precio', 15, 2)->default(0);
             $table->integer('estado')->default(1);
 
             $table->timestamps();

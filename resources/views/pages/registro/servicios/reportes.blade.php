@@ -53,7 +53,7 @@
                     </div>
                     <div class="col-lg-4 col-12">
                         <label for="" class="form-label">Servicio</label>
-                        <select id="servicio" class="form-select select2" name="servicio">
+                        <select id="servicio" class="form-select" name="servicio">
                             <option value="" selected>- Seleccione -</option>
                             @if (count($servicios) > 0)
                                 @foreach ($servicios as $key => $value)
@@ -75,11 +75,11 @@
                     </div>
                     <div class="col-lg-3 col-12 mt-4">
                         <label for="" class="form-label">Fecha desde</label>
-                        <input type="date" name="fecha_desde" class="form-control">
+                        <input type="date" name="fecha_desde" class="form-control" value="{{ date('Y-m-d') }}" required>
                     </div>
                     <div class="col-lg-3 col-12 mt-4">
                         <label for="" class="form-label">Fecha hasta</label>
-                        <input type="date" name="fecha_hasta" class="form-control">
+                        <input type="date" name="fecha_hasta" class="form-control" value="{{ date('Y-m-d') }}" required>
                     </div>
                     <div class="col-lg-3 col-12 mt-4">
                         <label for="" class="form-label">Acción</label> <br>

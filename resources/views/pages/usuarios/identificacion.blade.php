@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    @section('pagina')Facturas @endsection
+    @section('pagina')Identificación @endsection
 
     <div class="container-fluid">
 
@@ -8,7 +8,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item"><a href="{{ route('panel') }}">Inicio</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Facturas</li>
+                  <li class="breadcrumb-item"><a href="{{ route('panel') }}">Usuarios</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Identificación</li>
                 </ol>
             </nav>
         </div>
@@ -16,27 +17,43 @@
         <!-- Page Heading -->
         <div class="row mb-3">
             <div class="col-lg-12">
-                <h1 class="h3 text-gray-800 flex-grow-1">Facturas</h1>
+                <h1 class="h3 text-gray-800 flex-grow-1">Identificación</h1>
             </div>
         </div>
 
         <div class="card mb-4">
             <div class="card-header bg-gray-600">
                 <i class="fas fa-table me-1"></i>
-                Listado de Facturas
+                Filtros
+            </div>
+            <div class="card-body">
+                <form class="row" id="form_buscar" method="POST" target="_blank">
+                    @csrf
+                    <div class="col-lg-10 col-12 mt-4">
+                        <label for="" class="form-label">Cedula de Usuario</label>
+                        <input type="text" name="cedula" class="form-control" placeholder="Digite el número de cedula a buscar..." required>
+                    </div>
+                    <div class="col-lg-2 col-12 mt-4">
+                        <label for="" class="form-label">Acción</label> <br>
+                        <button type="submit" class="btn btn-primary btn-sm btn-block">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mb-4" id="div_resultados">
+            <div class="card-header bg-gray-600">
+                <i class="fas fa-table me-1"></i>
+                Resultados
             </div>
             <div class="card-body">
                 <table class="table" id="datatable" style="width: 100%;">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th># Documento</th>
-                            <th>Estudiante</th>
-                            <th>Fecha</th>
-                            <th>Servicio</th>
-                            <th>Tipo Servicio</th>
-                            <th>Valor</th>
-                            <th>Saldo</th>
+                            <th>Tipo Documento</th>
+                            <th>Numero Documento</th>
+                            <th>Nombres</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -44,13 +61,9 @@
                     <tfoot>
                         <tr>
                             <th>#</th>
-                            <th># Documento</th>
-                            <th>Estudiante</th>
-                            <th>Fecha</th>
-                            <th>Servicio</th>
-                            <th>Tipo Servicio</th>
-                            <th>Valor</th>
-                            <th>Saldo</th>
+                            <th>Tipo Documento</th>
+                            <th>Numero Documento</th>
+                            <th>Nombres</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
@@ -61,57 +74,39 @@
 
     </div>
 
-    <x-facturacion.modal-pagos/>
-
     <x-slot name="js">
         <script>
 
+            $('#div_resultados').hide();
+
             var tabla = $('#datatable').DataTable({
-                "processing": true,
+                //"processing": true,
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.11.4/i18n/es_es.json"
                 },
                 "order": [[ 0, "desc" ]],
                 "pageLength" : 25,
-                "ajax": route('facturacion.all'),
-                "responsive": true
+                "responsive": true,
+                "columns": [
+                    { "data": "id" },
+                    { "data": "tipo_documento" },
+                    { "data": "numero_documento" },
+                    { "data": "nombres" },
+                    { "data": "estado" },
+                    { "data": "boton" },
+                ]
             });
 
-            function realizarPago(id){
-                let timerInterval;
-                Swal.fire({
-                    title: "Espera!",
-                    text: "Cargando información...",
-                    timerProgressBar: true,
-                    timer: 1500,
-                    didOpen: () => {
-                        Swal.showLoading();
-                        const b = Swal.getHtmlContainer().querySelector('b');
-                        timerInterval = setInterval(() => {
-                            b.textContent = Swal.getTimerLeft()
-                        }, 100);
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval);
-                    }
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        $('#modal_pagos_factura_id').val(id);
-                        $('#modal_nuevo_pago').modal('show');
-                    }
-                });
-            }
-
-            $('#form_nuevo_pago').on('submit', function(e) {
+            $('#form_buscar').on('submit', function(e) {
                 event.preventDefault();
-                if ($('#form_nuevo_pago')[0].checkValidity() === false) {
+                if ($('#form_buscar')[0].checkValidity() === false) {
                     event.stopPropagation();
                 } else {
 
-                    var url = route('facturacion.pagos.create');
+                    var url = route('usuarios.getIdentificacion');
 
                     //agregar data
-                    var $thisForm = $('#form_nuevo_pago');
+                    var $thisForm = $('#form_buscar');
                     var formData = new FormData(this);
 
                     $.ajax({
@@ -129,7 +124,7 @@
                             let timerInterval;
                             Swal.fire({
                                 title: "Espera!",
-                                text: "Guardando el pago...",
+                                text: "Consultado información...",
                                 timerProgressBar: true,
                                 didOpen: () => {
                                     Swal.showLoading();
@@ -137,18 +132,37 @@
                             });
                         }
                     }).done(function(respuesta){
-                        //console.log(respuesta);
+                        console.log(respuesta);
                         if (!respuesta.error) {
+
+                            $('#div_resultados').show();
+                            //limpia la tabla
+                            tabla.clear().draw();
+
+                            if (respuesta.data.length > 0) {
+                                respuesta.data.forEach(element => {
+
+                                    tabla.row.add({
+                                            "id": element["id"],
+                                            "tipo_documento": element["tipo_documento"],
+                                            "numero_documento": element["numero_documento"],
+                                            "nombres": element["nombres"],
+                                            "estado": element["estado"],
+                                            "boton": element["boton"],
+                                    }).draw(false);
+
+                                });
+                            }
+
                             Swal.fire({
-                                text: "Pago guardado",
+                                text: "Información Cargada",
                                 icon: 'success',
                                 showConfirmButton: false,
                                 timer: 3000
                             });
-                            $('#form_nuevo_pago')[0].reset();
-                            $('#form_nuevo_pago').removeClass('was-validated');
-                            tabla.ajax.reload();
-                            $("#modal_nuevo_pago").modal('hide');
+                            $('#form_buscar')[0].reset();
+                            $('#form_buscar').removeClass('was-validated');
+
                         } else {
                             setTimeout(function(){
                                 Swal.fire({
@@ -168,9 +182,8 @@
                     });
 
                 }
-                $('#form_nuevo_pago').addClass('was-validated');
+                $('#form_buscar').addClass('was-validated');
             });
-
         </script>
     </x-slot>
 

@@ -77,6 +77,12 @@
                 allowClear: true,
             });
 
+            $('.select2_modal_2').select2({
+                dropdownParent: $('#modal_registrar_servicio'),
+                //minimumInputLength: 4,
+                allowClear: true,
+            });
+
             var tabla = $('#datatable').DataTable({
                 "processing": true,
                 "language": {

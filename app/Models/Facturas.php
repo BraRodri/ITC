@@ -15,10 +15,20 @@ class Facturas extends Model
         'fecha',
         'valor',
         'saldo',
-        'estado'
+        'con_firma',
+        'estado',
+        'user_created'
     ];
 
     public function registroServicio(){
         return $this->belongsTo(RegistroServicios::class, 'registro_servicio_id');
+    }
+
+    public function abonos(){
+        return $this->hasMany(PagosFacturas::class, 'factura_id');
+    }
+
+    public function creador(){
+        return $this->belongsTo(User::class, 'user_created');
     }
 }

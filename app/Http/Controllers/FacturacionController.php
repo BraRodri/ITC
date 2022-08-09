@@ -43,6 +43,7 @@ class FacturacionController extends Controller
 
                 $datos[] = array(
                     substr(str_repeat(0, 5).$value->id, - 5),
+                    $value->registroServicio->estudiante->numero_documento,
                     $value->registroServicio->estudiante->nombres,
                     $value->fecha,
                     $value->registroServicio->servicio,

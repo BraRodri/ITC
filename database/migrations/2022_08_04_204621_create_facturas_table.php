@@ -19,9 +19,11 @@ class CreateFacturasTable extends Migration
             $table->bigInteger('registro_servicio_id');
             $table->string('tipo');
             $table->date('fecha');
-            $table->float('valor')->default(0);
-            $table->float('saldo')->default(0);
+            $table->float('valor', 15, 2)->default(0);
+            $table->float('saldo', 15, 2)->default(0);
+            $table->integer('con_firma')->default(0);
             $table->integer('estado')->default(1);
+            $table->bigInteger('user_created')->nullable();
 
             $table->timestamps();
         });
