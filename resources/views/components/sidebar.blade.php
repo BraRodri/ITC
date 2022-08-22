@@ -64,19 +64,19 @@
     </li>
 
     <!-- Facturación -->
-    <li class="nav-item {{ ! Route::is('facturacion.index') ?: 'active' }} {{ ! Route::is('facturacion.reportes') ?: 'active' }} {{ ! Route::is('prestacion.servicios.index') ?: 'active' }}">
+    <li class="nav-item {{ ! Route::is('facturacion.index') ?: 'active' }} {{ ! Route::is('facturacion.reportes') ?: 'active' }} {{ ! Route::is('prestacion.servicios.index') ?: 'active' }} {{ ! Route::is('cuentas.cobros.index') ?: 'active' }}">
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseFacturacion"
             aria-expanded="true" aria-controls="collapseFacturacion">
             <i class="fa-solid fa-money-check-dollar"></i>
             <span>Facturación</span>
         </a>
-        <div id="collapseFacturacion" class="collapse {{ ! Route::is('facturacion.index') ?: 'show' }} {{ ! Route::is('facturacion.reportes') ?: 'show' }} {{ ! Route::is('prestacion.servicios.index') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseFacturacion" class="collapse {{ ! Route::is('facturacion.index') ?: 'show' }} {{ ! Route::is('facturacion.reportes') ?: 'show' }} {{ ! Route::is('prestacion.servicios.index') ?: 'show' }} {{ ! Route::is('cuentas.cobros.index') ?: 'show' }}" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Opciones:</h6>
                 <a class="collapse-item {{ ! Route::is('facturacion.index') ?: 'active' }}" href="{{ route('facturacion.index') }}">
                     Facturas
                 </a>
-                <a class="collapse-item {{ ! Route::is('facturacion.index') ?: 'active' }}" href="{{ route('facturacion.index') }}">
+                <a class="collapse-item {{ ! Route::is('cuentas.cobros.index') ?: 'active' }}" href="{{ route('cuentas.cobros.index') }}">
                     Pagos Cuenta Cobro
                 </a>
                 <a class="collapse-item {{ ! Route::is('prestacion.servicios.index') ?: 'active' }}" href="{{ route('prestacion.servicios.index') }}">

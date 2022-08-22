@@ -116,10 +116,16 @@
                                 Fecha de emisión:
                             </span>
                             <table class="table table-bordered">
+                                @php
+                                    $fechaComoEntero = strtotime($pago->fecha_emision);
+                                    $dia = date("d", $fechaComoEntero);
+                                    $mes = date("m", $fechaComoEntero);
+                                    $año = date("Y", $fechaComoEntero);
+                                @endphp
                                 <tr>
-                                    <td>02</td>
-                                    <td>08</td>
-                                    <td>2022</td>
+                                    <td>{{ $dia }}</td>
+                                    <td>{{ $mes }}</td>
+                                    <td>{{ $año }}</td>
                                 </tr>
                             </table>
                         </div>

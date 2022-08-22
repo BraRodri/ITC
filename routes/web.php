@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FacturacionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PagosCuentaCobro;
 use App\Http\Controllers\PagosPrestacionServiciosController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ServicioController;
@@ -139,6 +140,20 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::get('/edit/{id}', 'edit')->name('prestacion.servicios.edit');
         Route::post('/update', 'update')->name('prestacion.servicios.update');
         Route::get('/imprimir/{id}', 'imprimir')->name('prestacion.servicios.imprimir');
+
+    });
+
+    #Pagos cuentas cobros
+    Route::controller(PagosCuentaCobro::class)
+        ->prefix('facturacion/cuentas-cobros')->group(function () {
+
+        Route::get('/', 'index')->name('cuentas.cobros.index');
+        Route::post('/guardar', 'guardar')->name('cuentas.cobros.guardar');
+        Route::get('/all', 'all')->name('cuentas.cobros.all');
+        Route::get('/delete/{id}', 'delete')->name('cuentas.cobros.delete');
+        Route::get('/edit/{id}', 'edit')->name('cuentas.cobros.edit');
+        Route::post('/update', 'update')->name('cuentas.cobros.update');
+        Route::get('/imprimir/{id}', 'imprimir')->name('cuentas.cobros.imprimir');
 
     });
 
