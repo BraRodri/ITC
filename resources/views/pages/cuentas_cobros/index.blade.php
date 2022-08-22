@@ -62,7 +62,7 @@
 
     </div>
 
-    <x-cuentas-cobros.crear/>
+    <x-cuentas-cobros.crear-cuenta-cobro/>
 
     <x-slot name="js">
         <script>

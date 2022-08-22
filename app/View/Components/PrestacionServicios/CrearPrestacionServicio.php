@@ -1,11 +1,11 @@
 <?php
 
-namespace App\View\Components\CuentasCobros;
+namespace App\View\Components\PrestacionServicios;
 
 use Illuminate\View\Component;
 use Spatie\Permission\Models\Role;
 
-class crear extends Component
+class CrearPrestacionServicio extends Component
 {
     /**
      * Create a new component instance.
@@ -25,7 +25,7 @@ class crear extends Component
     public function render()
     {
         $roles = Role::all();
-        return view('components.cuentas-cobros.crear')->with([
+        return view('components.prestacion-servicios.crear-prestacion-servicio')->with([
             'roles' => $roles
         ]);
     }

@@ -58,7 +58,7 @@
 
     </div>
 
-    <x-prestacion-servicios.crear/>
+    <x-prestacion-servicios.crear-prestacion-servicio/>
 
     <x-slot name="js">
         <script>

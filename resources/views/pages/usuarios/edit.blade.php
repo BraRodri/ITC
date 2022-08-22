@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="passsword" autocomplete="off" @if($tipo == 2) disabled @endif>
+                        <input type="password" class="form-control" id="password" name="password" autocomplete="off" @if($tipo == 2) disabled @endif>
                     </div>
                     <div class="col-md-6">
                         <label for="inputPassword4" class="form-label">Telefono/Celular</label>
