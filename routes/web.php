@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FacturacionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PagosPrestacionServiciosController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\UserController;
@@ -59,6 +60,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         Route::post('/usuarios/update', 'update')->name('usuarios.update');
         Route::get('/usuarios/estudiantes', 'indexEstudiantes')->name('usuarios.estudiantes.index');
         Route::get('/usuarios/estudiantes/all', 'allEstudiantes')->name('usuarios.estudiantes.all');
+        Route::get('/usuarios/all/usuarios/{rol}', 'allUsersRoles')->name('usuarios.all.roles');
 
         //reportes
         Route::get('/usuarios/resportes', 'reportes')->name('usuarios.reportes');
@@ -123,6 +125,20 @@ Route::group(['middleware' => 'auth', 'prefix' => '/panel'], function () {
         //reportes
         Route::get('/reportes', 'reportes')->name('facturacion.reportes');
         Route::post('/reportes/generar', 'generarReportes')->name('facturacion.generarReportes');
+
+    });
+
+    #Pagos por prestación de servicios
+    Route::controller(PagosPrestacionServiciosController::class)
+        ->prefix('facturacion/prestacion-de-servicios')->group(function () {
+
+        Route::get('/', 'index')->name('prestacion.servicios.index');
+        Route::post('/guardar', 'guardar')->name('prestacion.servicios.guardar');
+        Route::get('/all', 'all')->name('prestacion.servicios.all');
+        Route::get('/delete/{id}', 'delete')->name('prestacion.servicios.delete');
+        Route::get('/edit/{id}', 'edit')->name('prestacion.servicios.edit');
+        Route::post('/update', 'update')->name('prestacion.servicios.update');
+        Route::get('/imprimir/{id}', 'imprimir')->name('prestacion.servicios.imprimir');
 
     });
 

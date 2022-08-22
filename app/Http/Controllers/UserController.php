@@ -378,4 +378,15 @@ class UserController extends Controller
         echo json_encode(array('error' => $error, 'mensaje' => $mensaje, 'data' => $data));
     }
 
+    public function allUsersRoles($rol)
+    {
+        $usuarios = User::where('estado', 1)->whereHas('roles', function ($query) use ($rol) {
+            $query->where('name', $rol);
+        })->get();
+
+        echo json_encode([
+            'data' => $usuarios,
+        ]);
+    }
+
 }

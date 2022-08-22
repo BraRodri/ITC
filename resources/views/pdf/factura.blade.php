@@ -103,7 +103,7 @@
 
                         <table class="table">
                             <tbody>
-                                <tr >
+                                <tr>
                                     <td width="20%" style="padding-bottom: 5px;">Fecha:</td>
                                     <td width="80%" style="padding-bottom: 5px;">
                                         <div class="border_abajo">
